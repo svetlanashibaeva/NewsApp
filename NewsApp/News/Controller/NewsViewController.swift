@@ -11,14 +11,19 @@ class NewsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
     
-    var apiKey = "b987156c920e4c88a5e02b4f4892b34c"
-    
-    var news = [News]()
+    var news = [Article]()
+    var networkNewsManager = NetworkManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        news.append(News(title: "new2", description: "kkfkgjkfjkgjfkjgkfjgkjfkjgk"))
-        news.append(News(title: "new3", description: "kkfkgjfdfdfdfdfdfdfdfkfjkgjfkjgkfjgkjfkjgk"))
+        
+        networkNewsManager.performRequest(with: NewsEndpoint.getNews) { (newsData) in
+            self.news = newsData.articles
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }
     }
 }
 

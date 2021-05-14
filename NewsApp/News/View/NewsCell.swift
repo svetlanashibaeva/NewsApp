@@ -12,7 +12,7 @@ class NewsCell: UITableViewCell {
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
     
-    func configure(with new: News) {
+    func configure(with new: Article) {
         titleLabel.text = new.title
         descriptionLabel.text = new.description
     }
