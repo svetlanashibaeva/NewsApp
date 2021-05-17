@@ -10,36 +10,44 @@ import UIKit
 class NewsViewController: UIViewController {
 
     @IBOutlet weak var tableView: UITableView!
-    let refreshControl = UIRefreshControl()
+    private let refreshControl = UIRefreshControl()
+    private let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    var news = [Article]()
-    var networkNewsManager = NetworkManager()
-    var page = 1
-    var isLoading = false
+    private var news = [Article]()
+    private var networkNewsManager = NetworkManager()
+    private var page = 1
+    private var isLoading = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         refreshControl.addTarget(self, action: #selector(refresh), for: .valueChanged)
         tableView.refreshControl = refreshControl
+        tableView.tableFooterView = activityIndicator
         
         loadData()
     }
     
-    @objc func refresh() {
+    @objc private func refresh() {
         guard !isLoading else { return }
         page = 1
         loadData()
     }
     
-    func loadData() {
+    private func loadData() {
         isLoading = true
+        activityIndicator.startAnimating()
         
         networkNewsManager.performRequest(with: NewsEndpoint.getNews(page: page)) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
-            case let .success(newsData):
-                self.news += newsData.articles
+            case let .success(articles):
+                if self.page == 1 {
+                    self.news = articles
+                } else {
+                    self.news += articles
+                }
                 self.page += 1
                 
             case let .failure(error):
@@ -48,15 +56,16 @@ class NewsViewController: UIViewController {
                 }
             }
             
-                DispatchQueue.main.async {
-                    self.refreshControl.endRefreshing()
-                    self.tableView.reloadData()
-                    self.isLoading = false
-                }
+            DispatchQueue.main.async {
+                self.refreshControl.endRefreshing()
+                self.activityIndicator.stopAnimating()
+                self.tableView.reloadData()
+                self.isLoading = false
+            }
         }
     }
     
-    func showError(error: String) {
+    private func showError(error: String) {
         let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
         let errorAction = UIAlertAction(title: "Ok", style: .default) { (action) in
             

@@ -8,8 +8,8 @@
 import Foundation
 
 class NetworkManager {
-
-    func performRequest(with endpoint: EndpointProtocol, completion: @escaping ((Result<NewsData, Error>) -> Void)) {
+    
+    func performRequest(with endpoint: EndpointProtocol, completion: @escaping ((Result<[Article], Error>) -> Void)) {
         var urlComponents = URLComponents()
         urlComponents.scheme = endpoint.scheme
         urlComponents.host = endpoint.host
@@ -22,7 +22,7 @@ class NetworkManager {
         let task = session.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 if let newsData = self.parseJSON(withData: data) {
-                    completion(Result.success(newsData))
+                    completion(Result.success(newsData.articles))
                 } else {
                     completion(Result.failure(MyError.parseError))
                 }
@@ -34,10 +34,10 @@ class NetworkManager {
         }
         task.resume()
     }
-
-    func parseJSON(withData data: Data) -> NewsData? {
+    
+    private func parseJSON(withData data: Data) -> NewsData? {
         let decoder = JSONDecoder()
-            return try? decoder.decode(NewsData.self, from: data)
+        return try? decoder.decode(NewsData.self, from: data)
     }
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 class NewsCell: UITableViewCell {
 
@@ -13,25 +14,20 @@ class NewsCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var newsImage: UIImageView!
     
-    func configure(with new: Article) {
-        titleLabel.text = new.title
-        descriptionLabel.text = new.description
-        loadImage(urlString: new.urlToImage)
+    func configure(with article: Article) {
+        titleLabel.text = article.title
+        descriptionLabel.text = article.description
+        setImage(urlToImage: article.urlToImage)
     }
     
-    private func loadImage(urlString: String?) {
-        guard let urlString = urlString,
-              let url = URL(string: urlString)
-        else { return }
-        
-        DispatchQueue.global().async { [weak self] in
-            if let data = try? Data(contentsOf: url) {
-                if let image = UIImage(data: data) {
-                    DispatchQueue.main.async {
-                        self?.newsImage.image = image
-                    }
-                }
-            }
+    private func setImage(urlToImage: String?) {
+        guard let urlToImage = urlToImage else {
+            return
         }
+        let url = URL(string: urlToImage)
+        newsImage.kf.indicatorType = .activity
+        newsImage.kf.setImage(with: url)
+//        newsImage.kf.setImage(with: url,
+//                              placeholder: UIimage)
     }
 }
