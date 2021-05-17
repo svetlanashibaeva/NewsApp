@@ -18,6 +18,7 @@
 		D341EE0A264D44E500EDCAE9 /* NewsData.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341EE09264D44E500EDCAE9 /* NewsData.swift */; };
 		D341EE0D264D555600EDCAE9 /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341EE0C264D555600EDCAE9 /* EndpointProtocol.swift */; };
 		D341EE10264E523C00EDCAE9 /* NewsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341EE0F264E523C00EDCAE9 /* NewsEndpoint.swift */; };
+		D341EE13264E6C3A00EDCAE9 /* MyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341EE12264E6C3A00EDCAE9 /* MyError.swift */; };
 		D3582F87264D117200247313 /* News.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3582F86264D117200247313 /* News.swift */; };
 /* End PBXBuildFile section */
 
@@ -35,6 +36,7 @@
 		D341EE09264D44E500EDCAE9 /* NewsData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsData.swift; sourceTree = "<group>"; };
 		D341EE0C264D555600EDCAE9 /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
 		D341EE0F264E523C00EDCAE9 /* NewsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsEndpoint.swift; sourceTree = "<group>"; };
+		D341EE12264E6C3A00EDCAE9 /* MyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyError.swift; sourceTree = "<group>"; };
 		D3582F86264D117200247313 /* News.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = News.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -108,6 +110,7 @@
 				D341EE09264D44E500EDCAE9 /* NewsData.swift */,
 				D341EE0C264D555600EDCAE9 /* EndpointProtocol.swift */,
 				D341EE0F264E523C00EDCAE9 /* NewsEndpoint.swift */,
+				D341EE12264E6C3A00EDCAE9 /* MyError.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -235,6 +238,7 @@
 				D341EE0D264D555600EDCAE9 /* EndpointProtocol.swift in Sources */,
 				D325169F264D096E0099593B /* AppDelegate.swift in Sources */,
 				D32516A9264D096E0099593B /* NewsApp.xcdatamodeld in Sources */,
+				D341EE13264E6C3A00EDCAE9 /* MyError.swift in Sources */,
 				D341EE0A264D44E500EDCAE9 /* NewsData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -8,7 +8,7 @@
 import Foundation
 
 enum NewsEndpoint: EndpointProtocol {
-    case getNews
+    case getNews(page: Int)
     
     var host: String {
         return "newsapi.org"
@@ -19,8 +19,12 @@ enum NewsEndpoint: EndpointProtocol {
     }
     
     var params: [String : String] {
-        return ["q": "tesla",
-                "apiKey":"b987156c920e4c88a5e02b4f4892b34c"]
+        switch self {
+        case let .getNews(page):
+            return ["q": "tesla",
+                    "page": "\(page)",
+                    "apiKey":"009bf23be7fa455095ae15b261ac5e0a"]
+        }
     }
     
     var headers: [String : String] {

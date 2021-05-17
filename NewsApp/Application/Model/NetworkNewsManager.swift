@@ -9,7 +9,7 @@ import Foundation
 
 class NetworkManager {
 
-    func performRequest(with endpoint: EndpointProtocol, completion: @escaping ((NewsData) -> Void)) {
+    func performRequest(with endpoint: EndpointProtocol, completion: @escaping ((Result<NewsData, Error>) -> Void)) {
         var urlComponents = URLComponents()
         urlComponents.scheme = endpoint.scheme
         urlComponents.host = endpoint.host
@@ -17,14 +17,19 @@ class NetworkManager {
         urlComponents.queryItems = endpoint.params.map({ (key, value) -> URLQueryItem in
             URLQueryItem(name: key, value: value)
         })
-        
-        guard let url = urlComponents.url else { return }
+        guard let url = urlComponents.url else { return completion(Result.failure(MyError.urlError)) }
         let session = URLSession(configuration: .default)
         let task = session.dataTask(with: url) { (data, response, error) in
             if let data = data {
                 if let newsData = self.parseJSON(withData: data) {
-                    completion(newsData)
+                    completion(Result.success(newsData))
+                } else {
+                    completion(Result.failure(MyError.parseError))
                 }
+            } else if let error = error {
+                completion(Result.failure(error))
+            } else {
+                completion(Result.failure(MyError.unkmownError))
             }
         }
         task.resume()
@@ -32,14 +37,7 @@ class NetworkManager {
 
     func parseJSON(withData data: Data) -> NewsData? {
         let decoder = JSONDecoder()
-        
-        do {
-            let newsData = try decoder.decode(NewsData.self, from: data)
-            return newsData
-        } catch let error as NSError{
-            print(error.localizedDescription)
-        }
-        return nil
+            return try? decoder.decode(NewsData.self, from: data)
     }
 }
 
