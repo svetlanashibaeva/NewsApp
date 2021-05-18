@@ -6,6 +6,9 @@
 //
 
 import UIKit
+import SafariServices
+
+// нажатие на ячейку, открытие новости в сафари через Safari services; сохранение новостей в кордату; привести юай в порядок
 
 class NewsViewController: UIViewController {
 
@@ -67,13 +70,17 @@ class NewsViewController: UIViewController {
     
     private func showError(error: String) {
         let alertController = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
-        let errorAction = UIAlertAction(title: "Ok", style: .default) { (action) in
-            
-        }
-        
+        let errorAction = UIAlertAction(title: "Ok", style: .default)
         alertController.addAction(errorAction)
         
-        present(alertController, animated: true, completion: nil)
+        present(alertController, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let pth = news[indexPath.row].url else { return }
+        guard let url = URL(string: pth) else { return }
+        let svc = SFSafariViewController(url: url)
+        present(svc, animated: true, completion: nil)
     }
 }
 
@@ -96,9 +103,9 @@ extension NewsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell", for: indexPath) as! NewsCell
-        let new = news[indexPath.row]
-        cell.configure(with: new)
-        
+        let article = news[indexPath.row]
+        cell.configure(with: article)
+    
         return cell
     }
 }
