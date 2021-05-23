@@ -14,10 +14,10 @@ class NewsCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     @IBOutlet weak var newsImage: UIImageView!
     
-    func configure(with article: Article) {
-        titleLabel.text = article.title
-        descriptionLabel.text = article.description
-        setImage(urlToImage: article.urlToImage)
+    func configure(with news: News) {
+        titleLabel.text = news.title
+        descriptionLabel.text = news.descr
+        setImage(urlToImage: news.urlToImage)
     }
     
     private func setImage(urlToImage: String?) {
@@ -27,7 +27,7 @@ class NewsCell: UITableViewCell {
         let url = URL(string: urlToImage)
         newsImage.kf.indicatorType = .activity
         newsImage.kf.setImage(with: url)
-//        newsImage.kf.setImage(with: url,
-//                              placeholder: UIimage)
+        newsImage.kf.setImage(with: url,
+                              placeholder: UIImage(named: "default-image.jpg"))
     }
 }

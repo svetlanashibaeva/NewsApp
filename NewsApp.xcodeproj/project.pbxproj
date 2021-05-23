@@ -20,6 +20,8 @@
 		D341EE0D264D555600EDCAE9 /* EndpointProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341EE0C264D555600EDCAE9 /* EndpointProtocol.swift */; };
 		D341EE10264E523C00EDCAE9 /* NewsEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341EE0F264E523C00EDCAE9 /* NewsEndpoint.swift */; };
 		D341EE13264E6C3A00EDCAE9 /* MyError.swift in Sources */ = {isa = PBXBuildFile; fileRef = D341EE12264E6C3A00EDCAE9 /* MyError.swift */; };
+		D3FEA81C265A6A6F00BDD3DC /* News+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FEA81A265A6A6F00BDD3DC /* News+CoreDataProperties.swift */; };
+		D3FEA81D265A6A6F00BDD3DC /* News+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = D3FEA81B265A6A6F00BDD3DC /* News+CoreDataClass.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		D341EE0C264D555600EDCAE9 /* EndpointProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndpointProtocol.swift; sourceTree = "<group>"; };
 		D341EE0F264E523C00EDCAE9 /* NewsEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsEndpoint.swift; sourceTree = "<group>"; };
 		D341EE12264E6C3A00EDCAE9 /* MyError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyError.swift; sourceTree = "<group>"; };
+		D3FEA81A265A6A6F00BDD3DC /* News+CoreDataProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "News+CoreDataProperties.swift"; sourceTree = "<group>"; };
+		D3FEA81B265A6A6F00BDD3DC /* News+CoreDataClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "News+CoreDataClass.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,6 +171,8 @@
 		D3582F90264D121E00247313 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				D3FEA81B265A6A6F00BDD3DC /* News+CoreDataClass.swift */,
+				D3FEA81A265A6A6F00BDD3DC /* News+CoreDataProperties.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -297,6 +303,8 @@
 			files = (
 				D341EE10264E523C00EDCAE9 /* NewsEndpoint.swift in Sources */,
 				D32516B7264D0A1F0099593B /* NewsCell.swift in Sources */,
+				D3FEA81C265A6A6F00BDD3DC /* News+CoreDataProperties.swift in Sources */,
+				D3FEA81D265A6A6F00BDD3DC /* News+CoreDataClass.swift in Sources */,
 				D32516A3264D096E0099593B /* NewsViewController.swift in Sources */,
 				D341EE07264D41FC00EDCAE9 /* NetworkNewsManager.swift in Sources */,
 				D341EE0D264D555600EDCAE9 /* EndpointProtocol.swift in Sources */,

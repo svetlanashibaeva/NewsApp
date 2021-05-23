@@ -37,6 +37,7 @@ class NetworkManager {
     
     private func parseJSON(withData data: Data) -> NewsData? {
         let decoder = JSONDecoder()
+//        decoder.dateDecodingStrategy = .iso8601
         return try? decoder.decode(NewsData.self, from: data)
     }
 }

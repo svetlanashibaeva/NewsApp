@@ -7,6 +7,7 @@
 
 import UIKit
 import SafariServices
+import CoreData
 
 // нажатие на ячейку, открытие новости в сафари через Safari services; сохранение новостей в кордату; привести юай в порядок
 
@@ -16,10 +17,15 @@ class NewsViewController: UIViewController {
     private let refreshControl = UIRefreshControl()
     private let activityIndicator = UIActivityIndicatorView(style: .large)
     
-    private var news = [Article]()
+    private var news = [News]()
     private var networkNewsManager = NetworkManager()
     private var page = 1
     private var isLoading = false
+    
+    private lazy var context: NSManagedObjectContext = {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        return appDelegate.persistentContainer.viewContext
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -47,10 +53,30 @@ class NewsViewController: UIViewController {
             switch result {
             case let .success(articles):
                 if self.page == 1 {
-                    self.news = articles
-                } else {
-                    self.news += articles
+                    // fetchRequest и удаление из кордаты
+                    
+                    // nsFetchRequest - как делали
+                    // nsBatchDeleteRequest - удобнее
+                    let request = NSFetchRequest<News>(entityName: "News")
+                    if let objects = try? self.context.fetch(request) {
+                        for object in objects {
+                            self.context.delete(object)
+                        }
+                    }
                 }
+                
+                articles.forEach { (article) in // сохранение в кордату
+                    News.create(with: article, context: self.context)
+                    self.saveNews(with: article)
+                }
+                
+                let request = NSFetchRequest<News>(entityName: "News") // фетч новых новостей
+                request.sortDescriptors = [NSSortDescriptor(key: "publishedAt", ascending: true)]
+                
+                if let news = try? self.context.fetch(request) {
+                    self.news = news
+                }
+                
                 self.page += 1
                 
             case let .failure(error):
@@ -76,11 +102,13 @@ class NewsViewController: UIViewController {
         present(alertController, animated: true)
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        guard let pth = news[indexPath.row].url else { return }
-        guard let url = URL(string: pth) else { return }
-        let svc = SFSafariViewController(url: url)
-        present(svc, animated: true, completion: nil)
+    private func saveNews(with arcticle: Article) {
+        
+        do {
+            try context.save()
+        } catch let error as NSError {
+            print(error.localizedDescription)
+        }
     }
 }
 
@@ -94,6 +122,14 @@ extension NewsViewController: UITableViewDelegate {
         }
     }
     
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        guard let pth = news[indexPath.row].url,
+              let url = URL(string: pth)
+        else { return }
+        
+        let svc = SFSafariViewController(url: url)
+        present(svc, animated: true, completion: nil)
+    }
 }
 
 extension NewsViewController: UITableViewDataSource {
