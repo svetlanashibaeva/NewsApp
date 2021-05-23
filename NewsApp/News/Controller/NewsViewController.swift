@@ -9,7 +9,6 @@ import UIKit
 import SafariServices
 import CoreData
 
-// нажатие на ячейку, открытие новости в сафари через Safari services; сохранение новостей в кордату; привести юай в порядок
 
 class NewsViewController: UIViewController {
 
@@ -34,6 +33,7 @@ class NewsViewController: UIViewController {
         tableView.refreshControl = refreshControl
         tableView.tableFooterView = activityIndicator
         
+        fetchNews()
         loadData()
     }
     
@@ -46,17 +46,13 @@ class NewsViewController: UIViewController {
     private func loadData() {
         isLoading = true
         activityIndicator.startAnimating()
-        
+
         networkNewsManager.performRequest(with: NewsEndpoint.getNews(page: page)) { [weak self] result in
             guard let self = self else { return }
             
             switch result {
             case let .success(articles):
                 if self.page == 1 {
-                    // fetchRequest и удаление из кордаты
-                    
-                    // nsFetchRequest - как делали
-                    // nsBatchDeleteRequest - удобнее
                     let request = NSFetchRequest<News>(entityName: "News")
                     if let objects = try? self.context.fetch(request) {
                         for object in objects {
@@ -65,17 +61,16 @@ class NewsViewController: UIViewController {
                     }
                 }
                 
-                articles.forEach { (article) in // сохранение в кордату
+                articles.forEach { (article) in
                     News.create(with: article, context: self.context)
-                    self.saveNews(with: article)
+                    do {
+                        try self.context.save()
+                    } catch let error as NSError {
+                        print(error.localizedDescription)
+                    }
                 }
                 
-                let request = NSFetchRequest<News>(entityName: "News") // фетч новых новостей
-                request.sortDescriptors = [NSSortDescriptor(key: "publishedAt", ascending: true)]
-                
-                if let news = try? self.context.fetch(request) {
-                    self.news = news
-                }
+                self.fetchNews()
                 
                 self.page += 1
                 
@@ -102,14 +97,15 @@ class NewsViewController: UIViewController {
         present(alertController, animated: true)
     }
     
-    private func saveNews(with arcticle: Article) {
+    private func fetchNews() {
+        let request = NSFetchRequest<News>(entityName: "News")
+        request.sortDescriptors = [NSSortDescriptor(key: "publishedAt", ascending: true)]
         
-        do {
-            try context.save()
-        } catch let error as NSError {
-            print(error.localizedDescription)
+        if let news = try? self.context.fetch(request) {
+            self.news = news
         }
     }
+    
 }
 
 extension NewsViewController: UITableViewDelegate {
